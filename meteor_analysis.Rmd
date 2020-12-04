@@ -31,3 +31,26 @@ meteorite_landings_clean %>%
   summarise(meteorite_count = n())
 ```
 
+```{r}
+#Make a new column called latitude_zone and recode for tropical, temperate and polar
+meteorite_landings_latitude <- meteorite_landings_clean %>%
+  mutate(
+    latitude_zone = case_when(
+      latitude == 0 & longitude == 0 ~ "NA",
+      abs(latitude) <= 23.5 ~ "tropical",
+      abs(latitude) >= 66.5 ~ "polar",
+      abs(latitude) < 66.5 ~ "temperate"
+    )
+  )
+```
+
+# Total number of meteorites and average size per latitude zone
+```{r}
+meteorite_landings_latitude %>% 
+  group_by(latitude_zone) %>%
+  summarise(count = n(),
+            avg_mass = mean(mass_g),
+            median_mass = median(mass_g))
+```
+
+
