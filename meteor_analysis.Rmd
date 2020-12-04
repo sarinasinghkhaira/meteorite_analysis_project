@@ -1,4 +1,33 @@
 ---
 title: "Meteor Analysis"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
+
+```{r }
+source("data_cleaning_script.R")
+```
+
+# The 10 largest meteorites in the dataset
+
+```{r}
+meteorite_landings_clean %>%
+  select(name, year, mass_g) %>%
+  slice_max(mass_g, n = 10)
+```
+# Average number of fallen and found meteorites
+```{r}
+meteorite_landings_clean %>%
+  group_by(fall) %>%
+  summarise(avg_mass = mean(mass_g))
+```
+
+# Number of meteorites per year since 2000
+```{r}
+meteorite_landings_clean %>%
+  filter(year >= 2000) %>%
+  group_by(year) %>%
+  summarise(meteorite_count = n())
+```
+
